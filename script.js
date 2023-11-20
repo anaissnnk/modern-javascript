@@ -1,17 +1,11 @@
 import API from "./config.js";
 
-// Getting my button element
 const inputButton = document.querySelector('#submit-search');
-console.log(inputButton);
-// Getting my input field element
 const inputField = document.querySelector('#cityName');
-//getting my container element
 const cityNameContainer = document.querySelector('.city-info')
-// Weekdays listed in the order used by the Date object in javascript
 const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+const weekdaysAltDisplay = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
-// In case I want to switch to a different format:
-const weekdays2 = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 // Check if weekdays are correctly displayed
 console.log(weekdays);
 // check if API is correctly imported
