@@ -1,10 +1,8 @@
-// Check if script is read by the browser!
-console.log("script is running")
-// import data from different files
 import API from "./config.js";
 
 // Getting my button element
-const button = document.querySelector('#submit-search');
+const inputButton = document.querySelector('#submit-search');
+console.log(inputButton);
 // Getting my input field element
 const inputField = document.querySelector('#cityName');
 //getting my container element
@@ -160,7 +158,7 @@ inputField.addEventListener('keyup', function(event) {
 })
 
 // add eventlistener to button
-button.addEventListener('click', function() {
+inputButton.addEventListener('click', function() {
     const theNameOfTheCity = document.querySelector("#cityName").value;
     console.log("clicked")
     fetch("http://api.weatherapi.com/v1/forecast.json?key=" + API.key + "&q=" + theNameOfTheCity + "&days=7&aqi=no&alerts=no")
