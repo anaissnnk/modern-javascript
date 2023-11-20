@@ -17,8 +17,6 @@ inputField.addEventListener('keyup', function(event) {
         .then(response => response.json())
         .then(data => {
 
-            // Check if data is received
-            console.log(data)
             // check if the data is not giving back an error
             if(data.error) {
                 return alert("Hey are you sure you are not holding up your map upside down?")
@@ -40,9 +38,7 @@ inputField.addEventListener('keyup', function(event) {
                     // get the container again for add the cards
                     const div = document.querySelector('.container');
 
-                    // d = date
                     const date = new Date()
-                    // console.log(weekdays[(d.getDay() + i) % 7])
                     const dateOfWeek = weekdays[(date.getDay() + i) % 7]
                 
                     // Create the elements with Data
@@ -75,7 +71,6 @@ inputField.addEventListener('keyup', function(event) {
                     dateOfWeekContentBeforeSliderAnimation.innerHTML = dateOfWeek;
                     contentBox.appendChild(dateOfWeekContentBeforeSliderAnimation);
                 
-                    console.log(data.forecast.forecastday[i].day.condition.text);
                     const tempDescription = document.createElement("h4");
                     tempDescription.innerHTML = data.forecast.forecastday[i].day.condition.text;
                     contentBox.appendChild(tempDescription);
@@ -118,10 +113,7 @@ inputField.addEventListener('keyup', function(event) {
                 minMax.appendChild(maxT);
                 }
             }
-        }).catch(err => {
-            //not working
-            // alert("Hey are you sure you are not holding up your map upside down?")
-        })
+        })//TODO: add error alert
     }
     }
 })
@@ -129,14 +121,11 @@ inputField.addEventListener('keyup', function(event) {
 // add eventlistener to button
 inputButton.addEventListener('click', function() {
     const cityName = document.querySelector("#cityName").value;
-    console.log("clicked")
-    fetch("http://api.weatherapi.com/v1/forecast.json?key=" + API.key + "&q=" + cityName + "&days=7&aqi=no&alerts=no")
+    fetch("http://api.weatherapi.com/v1/forecast.json?key=" + API.key + "&q=" + encodeURIComponent(cityName) + "&days=7&aqi=no&alerts=no")
     .then(response => response.json())
     .then(data => {
-        console.log(data)
         if(data.error) {
             return alert("Hey are you sure you are not holding up your map upside down?")
-            console.log("check if code stops")
         } else {
             const container = document.querySelector(".container");
             while (container.lastChild) {
@@ -144,9 +133,6 @@ inputButton.addEventListener('click', function() {
             };
 
             container.innerHTML = ""
-            // container.children.forEach(child => {
-            //     container.remove(child);
-            // })
             
             cityNameContainer.textContent = data.location.name + ", " + data.location.country;
 
@@ -154,7 +140,6 @@ inputButton.addEventListener('click', function() {
                 const container = document.querySelector('.container');
 
                 const date = new Date()
-                // console.log(weekdays[(date.getDay() + i) % 7])
                 const dayOfTheWeek = weekdays[(date.getDay() + i) % 7]
             
                 // Create the elements with Data
@@ -223,8 +208,5 @@ inputButton.addEventListener('click', function() {
             }
         }
     })
-    .catch(err => {
-        //not working
-        // alert("Hey are you sure you are not holding up your map upside down?")
-    })
+    //TODO: add alert
 })
