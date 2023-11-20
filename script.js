@@ -9,29 +9,19 @@ const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Frida
 // add eventlistener to input field
 inputField.addEventListener('keyup', async function(event) {
     if (event.code === "Enter") {
-
         // check if the value of the input field is not empty
         if (document.getElementById('cityName').value.trim()) {
             const cityName = document.getElementById('cityName').value.trim();
             const data = await fetchApiData(cityName);
-            
             // check data
             console.log(data);
-
-            // check if the data is not giving back an error
-            
-        
-                // Display the location in the browser as "City, Country"
-                cityNameContainer.textContent = data.location.name + ", " + data.location.country;
-
-                createCards(cityName);
-                clearContainer();
-}
-
-} 
+            // Display the location in the browser as "City, Country"
+            cityNameContainer.textContent = data.location.name + ", " + data.location.country;
+            createCards(cityName);
+            clearContainer();
+        }
+    } 
 });
-
-
 
 // add eventlistener to button
 inputButton.addEventListener('click', async function() {
@@ -50,10 +40,9 @@ async function fetchApiData(cityName) {
         const weatherInformation = await weatherApiInformation.json();
         return weatherInformation;
     } catch (error) {
-        return alert("Hey are you sure you are not holding up your map upside down?");
+        return console.log("Hey are you sure you are not holding up your map upside down?");
     }
 }
-
 
 //anais clear container
 function clearContainer() {
@@ -113,9 +102,6 @@ async function createCards(cityName) {
         const currentTemp = document.createElement("span");
         currentTemp.classList.add("current-temp");
 
-        // OLD structure from different API
-        // let averageTemp = (result.daily.temperature_2m_min[i] + result.daily.temperature_2m_max[i]) / 2;
-        // if(i === 0) averageTemp = result.current.temperature_2m;
         currentTemp.innerHTML = data.forecast.forecastday[i].day.avgtemp_c + "°C";
         currentTempBox.appendChild(currentTemp);
     
@@ -138,3 +124,6 @@ async function createCards(cityName) {
         minMaxTemperatures.appendChild(maxTemp);
     }
 }
+
+//TODO: alert message when error
+//TODO: check for variables global vs local
