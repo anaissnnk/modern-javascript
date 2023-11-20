@@ -1,5 +1,4 @@
 import API from "./config.js";
-console.log(API);
 
 const inputButton = document.querySelector('#submit-search');
 const inputField = document.querySelector('#cityName');
@@ -14,21 +13,15 @@ inputField.addEventListener('keyup', function(event) {
         // check if the value of the input field is not empty
     if (document.getElementById('cityName').value.trim()) {
         const cityName = document.getElementById('cityName').value.trim();
-        // Make the api call to get the weather Data based on the City
         fetch("http://api.weatherapi.com/v1/forecast.json?key=" + API.key + "&q=" + encodeURIComponent(cityName) + "&days=7&aqi=no&alerts=no")
-        // Transform the response in a readable javascript format
         .then(response => response.json())
-        // final formatted data from the API call
         .then(data => {
+
             // Check if data is received
             console.log(data)
-
-
             // check if the data is not giving back an error
             if(data.error) {
-                // stop the event from continuing the code if there is an error
                 return alert("Hey are you sure you are not holding up your map upside down?")
-                console.log("check if code stops")
             } else {
                 // continue with the code if there are no errors
                 const container = document.querySelector(".container");
@@ -36,14 +29,7 @@ inputField.addEventListener('keyup', function(event) {
                 while (container.lastChild) {
                     container.removeChild(container.lastChild);
                 };
-                
-                // I also found this option to remove the children (but it removes all html content though)
-                container.innerHTML = ""
-
-                // container.children.forEach(child => {
-                //     container.remove(child);
-                // })
-                
+        
                 // Display the location in the browser as "City, Country"
                 cityNameContainer.textContent = data.location.name + ", " + data.location.country;
 
@@ -55,7 +41,7 @@ inputField.addEventListener('keyup', function(event) {
                     const div = document.querySelector('.container');
 
                     // d = date
-                    const d = new Date()
+                    const date = new Date()
                     // console.log(weekdays[(d.getDay() + i) % 7])
                     // dow = dateOfWeek
                     const dow = weekdays[(d.getDay() + i) % 7]
