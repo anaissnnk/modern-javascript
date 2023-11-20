@@ -43,8 +43,7 @@ inputField.addEventListener('keyup', function(event) {
                     // d = date
                     const date = new Date()
                     // console.log(weekdays[(d.getDay() + i) % 7])
-                    // dow = dateOfWeek
-                    const dow = weekdays[(d.getDay() + i) % 7]
+                    const dateOfWeek = weekdays[(date.getDay() + i) % 7]
                 
                     // Create the elements with Data
                     const card = document.createElement('div');
@@ -72,9 +71,9 @@ inputField.addEventListener('keyup', function(event) {
                     contentBox.classList.add("contentBx");
                     card.appendChild(contentBox);
                 
-                    const dowContentBeforeSliderAnimation = document.createElement("h2");
-                    dowContentBeforeSliderAnimation.innerHTML = dow;
-                    contentBox.appendChild(dowContentBeforeSliderAnimation);
+                    const dateOfWeekContentBeforeSliderAnimation = document.createElement("h2");
+                    dateOfWeekContentBeforeSliderAnimation.innerHTML = dateOfWeek;
+                    contentBox.appendChild(dateOfWeekContentBeforeSliderAnimation);
                 
                     console.log(data.forecast.forecastday[i].day.condition.text);
                     const tempDescription = document.createElement("h4");
