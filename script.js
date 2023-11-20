@@ -19,7 +19,7 @@ inputField.addEventListener('keyup', function(event) {
 
             // check if the data is not giving back an error
             if(data.error) {
-                return alert("Hey are you sure you are not holding up your map upside down?")
+                return showErrorAlert();
             } else {
                 // continue with the code if there are no errors
                 const container = document.querySelector(".container");
@@ -57,6 +57,7 @@ inputField.addEventListener('keyup', function(event) {
 
                     const cardImg = document.createElement('img');
                     cardImg.src = data.forecast.forecastday[i].day.condition.icon;
+                    console.log(data.forecast.forecastday);
                     cardImg.alt = "Icon describing the following weather: " + data.forecast.forecastday[i].day.condition.text;
                     initialContentBeforeSlideAnimation.appendChild(cardImg);
 
@@ -125,7 +126,7 @@ inputButton.addEventListener('click', function() {
     .then(response => response.json())
     .then(data => {
         if(data.error) {
-            return alert("Hey are you sure you are not holding up your map upside down?")
+            return showErrorAlert();
         } else {
             const container = document.querySelector(".container");
             while (container.lastChild) {
@@ -210,3 +211,15 @@ inputButton.addEventListener('click', function() {
     })
     //TODO: add alert
 })
+
+function fetchWeatherData(cityName) {
+    // Your existing fetch code here...
+}
+
+function displayWeatherInfo(data) {
+    // Your code for displaying weather information here...
+}
+
+function showErrorAlert() {
+    alert("Hey are you sure you are not holding up your map upside down?")
+}
