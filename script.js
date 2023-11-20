@@ -4,22 +4,23 @@ const inputButton = document.querySelector('#submit-search');
 const inputField = document.querySelector('#cityName');
 const cityNameContainer = document.querySelector('.city-info')
 const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-const weekdaysAltDisplay = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+//const weekdaysAltDisplay = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
 // add eventlistener to input field
-inputField.addEventListener('keyup', function(event) {
+inputField.addEventListener('keyup', async function(event) {
     if (event.code === "Enter") {
 
         // check if the value of the input field is not empty
-    if (document.getElementById('cityName').value.trim()) {
-        const cityName = document.getElementById('cityName').value.trim();
-        fetch("http://api.weatherapi.com/v1/forecast.json?key=" + API.key + "&q=" + encodeURIComponent(cityName) + "&days=7&aqi=no&alerts=no")
-        .then(response => response.json())
-        .then(data => {
+        if (document.getElementById('cityName').value.trim()) {
+            const cityName = document.getElementById('cityName').value.trim();
+            const data = await fetchApiData(cityName);
+            
+            // check data
+            console.log(data);
 
             // check if the data is not giving back an error
-            if(data.error) {
-                return showErrorAlert();
+            if (data.error) {
+                return alert("Hey are you sure you are not holding up your map upside down?");
             } else {
                 // continue with the code if there are no errors
                 const container = document.querySelector(".container");
@@ -31,11 +32,11 @@ inputField.addEventListener('keyup', function(event) {
                 // Display the location in the browser as "City, Country"
                 cityNameContainer.textContent = data.location.name + ", " + data.location.country;
 
-                // Create cards for each days (first 5 days) of the week.
+                // Create cards for each day (first 5 days) of the week.
                 // if I want to have 7 days, I just need to augment the number in the loop condition from 5 to 7
-                for(let i= 0; i < 5; i++) {
+                for (let i = 0; i < 5; i++) {
 
-                    // get the container again for add the cards
+                    // get the container again to add the cards
                     const div = document.querySelector('.container');
 
                     const date = new Date()
@@ -57,12 +58,8 @@ inputField.addEventListener('keyup', function(event) {
 
                     const cardImg = document.createElement('img');
                     cardImg.src = data.forecast.forecastday[i].day.condition.icon;
-                    console.log(data.forecast.forecastday);
                     cardImg.alt = "Icon describing the following weather: " + data.forecast.forecastday[i].day.condition.text;
                     initialContentBeforeSlideAnimation.appendChild(cardImg);
-
-
-
                     
                     const contentBox = document.createElement("div");
                     contentBox.classList.add("contentBx");
@@ -87,52 +84,40 @@ inputField.addEventListener('keyup', function(event) {
                     const currentT = document.createElement("span");
                     currentT.classList.add("current-temp");
 
-                    // OLD structure from different API
-                    // let averageTemp = (result.daily.temperature_2m_min[i] + result.daily.temperature_2m_max[i]) / 2;
-                    // if(i === 0) averageTemp = result.current.temperature_2m;
-
-                // NEW structure:
-                currentT.innerHTML = data.forecast.forecastday[i].day.avgtemp_c + "°C";
-                currentTempBox.appendChild(currentT);
+                    // NEW structure:
+                    currentT.innerHTML = data.forecast.forecastday[i].day.avgtemp_c + "°C";
+                    currentTempBox.appendChild(currentT);
             
-                const minMax = document.createElement("div");
-                minMax.classList.add("details");
-                contentBox.appendChild(minMax);
+                    const minMax = document.createElement("div");
+                    minMax.classList.add("details");
+                    contentBox.appendChild(minMax);
             
-                const minMaxTempHeader = document.createElement("h3");
-                minMaxTempHeader.innerHTML = "More:"
-                minMax.appendChild(minMaxTempHeader);
+                    const minMaxTempHeader = document.createElement("h3");
+                    minMaxTempHeader.innerHTML = "More:"
+                    minMax.appendChild(minMaxTempHeader);
             
-                const minT = document.createElement("span");
-                minT.classList.add("min-temp")
-                minT.innerHTML = data.forecast.forecastday[i].day.mintemp_c  + "°C";
-                minMax.appendChild(minT);
+                    const minT = document.createElement("span");
+                    minT.classList.add("min-temp")
+                    minT.innerHTML = data.forecast.forecastday[i].day.mintemp_c  + "°C";
+                    minMax.appendChild(minT);
             
-                const maxT = document.createElement("span");
-                maxT.classList.add("max-temp")
-                maxT.innerHTML = data.forecast.forecastday[i].day.maxtemp_c + "°C";
-                minMax.appendChild(maxT);
+                    const maxT = document.createElement("span");
+                    maxT.classList.add("max-temp")
+                    maxT.innerHTML = data.forecast.forecastday[i].day.maxtemp_c + "°C";
+                    minMax.appendChild(maxT);
                 }
             }
-        })//TODO: add error alert
+        }
     }
-    }
-})
+});
+
 
 // add eventlistener to button
-inputButton.addEventListener('click', function() {
+inputButton.addEventListener('click', async function() {
     const cityName = document.querySelector("#cityName").value;
-    fetch("http://api.weatherapi.com/v1/forecast.json?key=" + API.key + "&q=" + encodeURIComponent(cityName) + "&days=7&aqi=no&alerts=no")
-    .then(response => response.json())
-    .then(data => {
-        if(data.error) {
-            return showErrorAlert();
-        } else {
-            const container = document.querySelector(".container");
-            while (container.lastChild) {
-                container.removeChild(container.lastChild);
-            };
+    const container = document.querySelector(".container");
 
+    const data = await fetchApiData(cityName);
             container.innerHTML = ""
             
             cityNameContainer.textContent = data.location.name + ", " + data.location.country;
@@ -207,19 +192,18 @@ inputButton.addEventListener('click', function() {
                 maxTemp.innerHTML = data.forecast.forecastday[i].day.maxtemp_c + "°C";
                 minMaxTemperatures.appendChild(maxTemp);
             }
-        }
-    })
-    //TODO: add alert
-})
+});
 
-function fetchWeatherData(cityName) {
-    // Your existing fetch code here...
+//anais
+async function fetchApiData(cityName) {
+    const weatherApi = "http://api.weatherapi.com/v1/forecast.json?key=" + API.key + "&q=" + encodeURIComponent(cityName) + "&days=7&aqi=no&alerts=no";
+    try {
+        const weatherApiInformation = await fetch(weatherApi);
+        const weatherInformation = await weatherApiInformation.json();
+        return weatherInformation;
+    } catch (error) {
+        console.error('Error fetching weather data:', error);
+        throw error;
+    }
 }
 
-function displayWeatherInfo(data) {
-    // Your code for displaying weather information here...
-}
-
-function showErrorAlert() {
-    alert("Hey are you sure you are not holding up your map upside down?")
-}
