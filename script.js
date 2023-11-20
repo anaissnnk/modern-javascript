@@ -19,15 +19,7 @@ inputField.addEventListener('keyup', async function(event) {
             console.log(data);
 
             // check if the data is not giving back an error
-            if (data.error) {
-                return alert("Hey are you sure you are not holding up your map upside down?");
-            } else {
-                // continue with the code if there are no errors
-                const container = document.querySelector(".container");
-                // Remove existing children if there are any in the <element class="container">
-                while (container.lastChild) {
-                    container.removeChild(container.lastChild);
-                };
+            clearContainer();
         
                 // Display the location in the browser as "City, Country"
                 cityNameContainer.textContent = data.location.name + ", " + data.location.country;
@@ -108,8 +100,8 @@ inputField.addEventListener('keyup', async function(event) {
                 }
             }
         }
-    }
 });
+
 
 
 // add eventlistener to button
@@ -202,8 +194,16 @@ async function fetchApiData(cityName) {
         const weatherInformation = await weatherApiInformation.json();
         return weatherInformation;
     } catch (error) {
-        console.error('Error fetching weather data:', error);
-        throw error;
+        return alert("Hey are you sure you are not holding up your map upside down?");
     }
 }
+
+
+function clearContainer() {
+    const container = document.querySelector(".container");
+    while (container.lastChild) {
+        container.removeChild(container.lastChild);
+}
+}
+
 
