@@ -110,7 +110,7 @@ inputButton.addEventListener('click', async function() {
     const container = document.querySelector(".container");
 
     const data = await fetchApiData(cityName);
-            container.innerHTML = ""
+    clearContainer();
             
             cityNameContainer.textContent = data.location.name + ", " + data.location.country;
 
