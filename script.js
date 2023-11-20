@@ -1,4 +1,5 @@
 import API from "./config.js";
+console.log(API);
 
 const inputButton = document.querySelector('#submit-search');
 const inputField = document.querySelector('#cityName');
@@ -8,18 +9,13 @@ const weekdaysAltDisplay = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
 // add eventlistener to input field
 inputField.addEventListener('keyup', function(event) {
-    const cityName = document.querySelector("#cityName").value;
-
-    // see if event listener is triggered
-    console.log("Enter submission")
-
-    // check if the keyup action is used on an Enter key
     if (event.code === "Enter") {
 
         // check if the value of the input field is not empty
     if (document.getElementById('cityName').value.trim()) {
+        const cityName = document.getElementById('cityName').value.trim();
         // Make the api call to get the weather Data based on the City
-        fetch("http://api.weatherapi.com/v1/forecast.json?key=" + API.key + "&q=" + cityName + "&days=7&aqi=no&alerts=no")
+        fetch("http://api.weatherapi.com/v1/forecast.json?key=" + API.key + "&q=" + encodeURIComponent(cityName) + "&days=7&aqi=no&alerts=no")
         // Transform the response in a readable javascript format
         .then(response => response.json())
         // final formatted data from the API call
@@ -247,13 +243,3 @@ inputButton.addEventListener('click', function() {
         // alert("Hey are you sure you are not holding up your map upside down?")
     })
 })
-
-// This is a weather web application made for educational purposes. Please do not commercialize this project in any way whatsoever.
-// Made by a BeCode technical coach whom had a lot of fun making "bad code", and improved by the very learners of this class.
-// I want to mention that this is a fully working app, but can be optimized by: 
-// cleaning up, 
-// refactoring the code, 
-// renaming the variables, 
-// removing redundant code,
-// removing unnecessary comments,
-// storing information into variables for easier and more readable use 
