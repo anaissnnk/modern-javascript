@@ -19,87 +19,16 @@ inputField.addEventListener('keyup', async function(event) {
             console.log(data);
 
             // check if the data is not giving back an error
-            clearContainer();
+            
         
                 // Display the location in the browser as "City, Country"
                 cityNameContainer.textContent = data.location.name + ", " + data.location.country;
 
-                // Create cards for each day (first 5 days) of the week.
-                // if I want to have 7 days, I just need to augment the number in the loop condition from 5 to 7
-                for (let i = 0; i < 5; i++) {
+                createCards(cityName);
+                clearContainer();
+}
 
-                    // get the container again to add the cards
-                    const div = document.querySelector('.container');
-
-                    const date = new Date()
-                    const dateOfWeek = weekdays[(date.getDay() + i) % 7]
-                
-                    // Create the elements with Data
-                    const card = document.createElement('div');
-                    card.classList.add("card");
-                    
-                    // if it's the first element (index === 0), add a second class: "main-card" for unique styling
-                    if (i === 0) card.classList.add("main-card");
-                
-                    div.appendChild(card);
-                
-                    const initialContentBeforeSlideAnimation = document.createElement('div');
-                    initialContentBeforeSlideAnimation.classList.add("imgBx");
-                    card.appendChild(initialContentBeforeSlideAnimation);
-                    
-
-                    const cardImg = document.createElement('img');
-                    cardImg.src = data.forecast.forecastday[i].day.condition.icon;
-                    cardImg.alt = "Icon describing the following weather: " + data.forecast.forecastday[i].day.condition.text;
-                    initialContentBeforeSlideAnimation.appendChild(cardImg);
-                    
-                    const contentBox = document.createElement("div");
-                    contentBox.classList.add("contentBx");
-                    card.appendChild(contentBox);
-                
-                    const dateOfWeekContentBeforeSliderAnimation = document.createElement("h2");
-                    dateOfWeekContentBeforeSliderAnimation.innerHTML = dateOfWeek;
-                    contentBox.appendChild(dateOfWeekContentBeforeSliderAnimation);
-                
-                    const tempDescription = document.createElement("h4");
-                    tempDescription.innerHTML = data.forecast.forecastday[i].day.condition.text;
-                    contentBox.appendChild(tempDescription);
-                
-                    const currentTempBox = document.createElement("div");
-                    currentTempBox.classList.add("color");
-                    contentBox.appendChild(currentTempBox)
-                
-                    const currentTempHeader = document.createElement("h3");
-                    currentTempHeader.innerHTML = "Temp:"
-                    currentTempBox.appendChild(currentTempHeader);
-                
-                    const currentT = document.createElement("span");
-                    currentT.classList.add("current-temp");
-
-                    // NEW structure:
-                    currentT.innerHTML = data.forecast.forecastday[i].day.avgtemp_c + "°C";
-                    currentTempBox.appendChild(currentT);
-            
-                    const minMax = document.createElement("div");
-                    minMax.classList.add("details");
-                    contentBox.appendChild(minMax);
-            
-                    const minMaxTempHeader = document.createElement("h3");
-                    minMaxTempHeader.innerHTML = "More:"
-                    minMax.appendChild(minMaxTempHeader);
-            
-                    const minT = document.createElement("span");
-                    minT.classList.add("min-temp")
-                    minT.innerHTML = data.forecast.forecastday[i].day.mintemp_c  + "°C";
-                    minMax.appendChild(minT);
-            
-                    const maxT = document.createElement("span");
-                    maxT.classList.add("max-temp")
-                    maxT.innerHTML = data.forecast.forecastday[i].day.maxtemp_c + "°C";
-                    minMax.appendChild(maxT);
-                }
-            }
-        }
+} 
 });
 
 
@@ -107,14 +36,10 @@ inputField.addEventListener('keyup', async function(event) {
 // add eventlistener to button
 inputButton.addEventListener('click', async function() {
     const cityName = document.querySelector("#cityName").value;
-    const container = document.querySelector(".container");
-
     const data = await fetchApiData(cityName);
-
-            
-            cityNameContainer.textContent = data.location.name + ", " + data.location.country;
-            createCards(cityName);
-            clearContainer();
+    cityNameContainer.textContent = data.location.name + ", " + data.location.country;
+    createCards(cityName);
+    clearContainer();
 });
 
 //anais fetch data
