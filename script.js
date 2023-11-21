@@ -3,7 +3,6 @@ import API from "./config.js";
 const inputButton = document.querySelector('#submit-search');
 const inputField = document.querySelector('#cityName');
 const cityNameContainer = document.querySelector('.city-info')
-const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 //const weekdaysAltDisplay = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
 // add eventlistener to input field
@@ -13,8 +12,7 @@ inputField.addEventListener('keyup', async function(event) {
         if (document.getElementById('cityName').value.trim()) {
             const cityName = document.getElementById('cityName').value.trim();
             const data = await fetchApiData(cityName);
-            // check data
-            console.log(data);
+            //console.log(data);
             // Display the location in the browser as "City, Country"
             cityNameContainer.textContent = data.location.name + ", " + data.location.country;
             createCards(cityName);
@@ -58,6 +56,7 @@ async function createCards(cityName) {
     console.log(data);
     for(let i= 0; i < 5; i++) {
         const container = document.querySelector('.container');
+        const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
         const date = new Date()
         const dayOfTheWeek = weekdays[(date.getDay() + i) % 7]
