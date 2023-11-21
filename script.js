@@ -3,7 +3,6 @@ import API from "./config.js";
 const inputButton = document.querySelector('#submit-search');
 const inputField = document.querySelector('#cityName');
 const cityNameContainer = document.querySelector('.city-info')
-//const weekdaysAltDisplay = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
 // add eventlistener to input field
 inputField.addEventListener('keyup', async function(event) {
@@ -13,9 +12,8 @@ inputField.addEventListener('keyup', async function(event) {
             const cityName = document.getElementById('cityName').value.trim();
             const data = await fetchApiData(cityName);
             //console.log(data);
-            // Display the location in the browser as "City, Country"
             cityNameContainer.textContent = data.location.name + ", " + data.location.country;
-            createCards(cityName);
+            createCard(cityName);
             clearContainer();
         }
     } 
@@ -26,12 +24,12 @@ inputButton.addEventListener('click', async function() {
     const cityName = document.querySelector("#cityName").value;
     const data = await fetchApiData(cityName);
     cityNameContainer.textContent = data.location.name + ", " + data.location.country;
-    createCards(cityName);
+    createCard(cityName);
     clearContainer();
 });
 
 //anais fetch data
-async function fetchApiData(cityName) {
+const fetchApiData = async (cityName) => {
     const weatherApi = "http://api.weatherapi.com/v1/forecast.json?key=" + API.key + "&q=" + encodeURIComponent(cityName) + "&days=7&aqi=no&alerts=no";
     try {
         const weatherApiInformation = await fetch(weatherApi);
@@ -43,17 +41,17 @@ async function fetchApiData(cityName) {
 }
 
 //anais clear container
-function clearContainer() {
+const clearContainer = () => {
     const container = document.querySelector(".container");
     while (container.lastChild) {
         container.removeChild(container.lastChild);
 }
 }
 
-//anais create card
-async function createCards(cityName) {
+//anais create card{}
+const createCard = async(cityName) => {
     const data = await fetchApiData(cityName);
-    console.log(data);
+    //console.log(data);
     for(let i= 0; i < 5; i++) {
         const container = document.querySelector('.container');
         const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
@@ -123,6 +121,3 @@ async function createCards(cityName) {
         minMaxTemperatures.appendChild(maxTemp);
     }
 }
-
-//TODO: alert message when error
-//TODO: check for variables global vs local
