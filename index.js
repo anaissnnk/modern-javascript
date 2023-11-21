@@ -7,6 +7,7 @@ const inputField = document.querySelector('#cityName');
 inputField.addEventListener('keyup', async function(event) {
     if (event.code === "Enter") {
         if (document.getElementById('cityName').value.trim()) {
+            clearContainer();
             const cityName = document.getElementById('cityName').value.trim();
             const data = await fetchApiData(cityName);
             cityNameContainer.textContent = data.location.name + ", " + data.location.country;
@@ -17,6 +18,7 @@ inputField.addEventListener('keyup', async function(event) {
 
 const inputButton = document.querySelector('#submit-search');
 inputButton.addEventListener('click', async function() {
+    clearContainer();
     const cityName = document.querySelector("#cityName").value;
     const data = await fetchApiData(cityName);
     cityNameContainer.textContent = data.location.name + ", " + data.location.country;
