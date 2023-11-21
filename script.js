@@ -1,49 +1,4 @@
-import API from "./config.js";
-
-const cityNameContainer = document.querySelector('.city-info')
-
-const inputField = document.querySelector('#cityName');
-inputField.addEventListener('keyup', async function(event) {
-    if (event.code === "Enter") {
-        if (document.getElementById('cityName').value.trim()) {
-            const cityName = document.getElementById('cityName').value.trim();
-            const data = await fetchApiData(cityName);
-            cityNameContainer.textContent = data.location.name + ", " + data.location.country;
-            createCard(cityName);
-            clearContainer();
-        }
-    } 
-});
-
-const inputButton = document.querySelector('#submit-search');
-inputButton.addEventListener('click', async function() {
-    const cityName = document.querySelector("#cityName").value;
-    const data = await fetchApiData(cityName);
-    cityNameContainer.textContent = data.location.name + ", " + data.location.country;
-    createCard(cityName);
-    clearContainer();
-});
-
-const fetchApiData = async (cityName) => {
-    const weatherApi = "http://api.weatherapi.com/v1/forecast.json?key=" + API.key + "&q=" + encodeURIComponent(cityName) + "&days=7&aqi=no&alerts=no";
-    try {
-        const weatherApiInformation = await fetch(weatherApi);
-        const weatherInformation = await weatherApiInformation.json();
-        return weatherInformation;
-    } catch (error) {
-        console.error("Hey are you sure you are not holding up your map upside down?");
-    }
-}
-
-const clearContainer = () => {
-    const container = document.querySelector(".container");
-    while (container.lastChild) {
-        container.removeChild(container.lastChild);
-}
-}
-
-const createCard = async(cityName) => {
-    const data = await fetchApiData(cityName);
+const createCard = async (cityName, data) => {
     for(let i= 0; i < 5; i++) {
         const container = document.querySelector('.container');
         const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
@@ -75,7 +30,6 @@ const createCard = async(cityName) => {
         cardHeader.innerHTML = dayOfTheWeek;
         contentBox.appendChild(cardHeader);
     
-        console.log(data.forecast.forecastday[i].day.condition.text);
         const tempDescription = document.createElement("h4");
         tempDescription.innerHTML = data.forecast.forecastday[i].day.condition.text;
         contentBox.appendChild(tempDescription);
@@ -113,3 +67,5 @@ const createCard = async(cityName) => {
         minMaxTemperatures.appendChild(maxTemp);
     }
 }
+
+export {createCard}; 
