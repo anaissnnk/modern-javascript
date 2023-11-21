@@ -40,5 +40,5 @@ const clearContainer = () => {
     const container = document.querySelector(".container");
     while (container.lastChild) {
         container.removeChild(container.lastChild);
-}
+    }
 }
