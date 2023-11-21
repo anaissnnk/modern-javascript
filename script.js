@@ -38,7 +38,7 @@ async function fetchApiData(cityName) {
         const weatherInformation = await weatherApiInformation.json();
         return weatherInformation;
     } catch (error) {
-        return console.log("Hey are you sure you are not holding up your map upside down?");
+        console.error("Hey are you sure you are not holding up your map upside down?");
     }
 }
 
