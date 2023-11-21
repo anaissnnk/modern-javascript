@@ -1,17 +1,13 @@
 import API from "./config.js";
 
-const inputButton = document.querySelector('#submit-search');
-const inputField = document.querySelector('#cityName');
 const cityNameContainer = document.querySelector('.city-info')
 
-// add eventlistener to input field
+const inputField = document.querySelector('#cityName');
 inputField.addEventListener('keyup', async function(event) {
     if (event.code === "Enter") {
-        // check if the value of the input field is not empty
         if (document.getElementById('cityName').value.trim()) {
             const cityName = document.getElementById('cityName').value.trim();
             const data = await fetchApiData(cityName);
-            //console.log(data);
             cityNameContainer.textContent = data.location.name + ", " + data.location.country;
             createCard(cityName);
             clearContainer();
@@ -19,7 +15,7 @@ inputField.addEventListener('keyup', async function(event) {
     } 
 });
 
-// add eventlistener to button
+const inputButton = document.querySelector('#submit-search');
 inputButton.addEventListener('click', async function() {
     const cityName = document.querySelector("#cityName").value;
     const data = await fetchApiData(cityName);
@@ -28,7 +24,6 @@ inputButton.addEventListener('click', async function() {
     clearContainer();
 });
 
-//anais fetch data
 const fetchApiData = async (cityName) => {
     const weatherApi = "http://api.weatherapi.com/v1/forecast.json?key=" + API.key + "&q=" + encodeURIComponent(cityName) + "&days=7&aqi=no&alerts=no";
     try {
@@ -40,7 +35,6 @@ const fetchApiData = async (cityName) => {
     }
 }
 
-//anais clear container
 const clearContainer = () => {
     const container = document.querySelector(".container");
     while (container.lastChild) {
@@ -48,16 +42,14 @@ const clearContainer = () => {
 }
 }
 
-//anais create card{}
 const createCard = async(cityName) => {
     const data = await fetchApiData(cityName);
-    //console.log(data);
     for(let i= 0; i < 5; i++) {
         const container = document.querySelector('.container');
         const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
-        const date = new Date()
-        const dayOfTheWeek = weekdays[(date.getDay() + i) % 7]
+        const getDate = new Date()
+        const dayOfTheWeek = weekdays[(getDate.getDay() + i) % 7]
     
         // Create the elements with Data
         const card = document.createElement('div');
