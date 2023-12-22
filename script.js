@@ -1,5 +1,5 @@
 const createCard = async (cityName, data) => {
-    for(let i= 0; i < 5; i++) {
+    for(let i= 0; i < 3; i++) {
         const container = document.querySelector('.container');
         const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
